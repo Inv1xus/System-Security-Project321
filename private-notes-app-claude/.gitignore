@@ -1,5 +1,7 @@
 node_modules/
 data/
+# Built release archive (~156 MB); rebuild it with the buildx command in README.md
+dist/
 *.db
 *.db-wal
 *.db-shm

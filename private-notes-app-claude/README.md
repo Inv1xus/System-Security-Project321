@@ -43,6 +43,28 @@ Then open http://localhost:3000.
 The named volume `private-notes-data` keeps the SQLite file (`/data/notes.db`)
 between runs. Drop `-v private-notes-data:/data` if you want a throwaway database.
 
+## Prebuilt image (no source code needed)
+
+`dist/` holds the finished app as a multi-architecture image (linux/amd64 and
+linux/arm64), so anyone can run it with Docker alone:
+
+```bash
+docker load -i dist/private-notes-claude-multiarch.tar.gz
+```
+
+```bash
+docker run --name private-notes -p 3000:3000 -v private_notes_data:/data private-notes-claude:1.0.0
+```
+
+`dist/README.txt` is the standalone instructions to ship alongside the archive,
+and `dist/SHA256SUMS.txt` is its checksum (`shasum -a 256 -c SHA256SUMS.txt`).
+
+To rebuild the archive from source:
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -t private-notes-claude:1.0.0 --output type=oci,dest=dist/private-notes-claude-multiarch.tar . && gzip -9 -f dist/private-notes-claude-multiarch.tar
+```
+
 ## Run without Docker
 
 ```bash
