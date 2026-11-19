@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f4ef">
+  <title>Private Notes</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main id="auth-view" class="auth-layout" hidden>
+    <section class="welcome-panel" aria-label="Welcome">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span> Private Notes</div>
+      <div class="welcome-copy">
+        <span class="eyebrow">A QUIET PLACE FOR YOUR THOUGHTS</span>
+        <h1>Keep what<br>matters close.</h1>
+        <p>Write freely. Your notes stay in your own private space, ready whenever you are.</p>
+      </div>
+      <div class="welcome-foot">A little room to think clearly.</div>
+    </section>
+    <section class="auth-panel">
+      <div class="auth-card">
+        <span class="eyebrow">WELCOME IN</span>
+        <h2 id="auth-title">Log in</h2>
+        <p id="auth-description" class="muted">Pick up where you left off.</p>
+        <form id="auth-form">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" placeholder="At least 8 characters">
+          <p id="auth-error" class="form-message error" role="alert" hidden></p>
+          <button id="auth-submit" class="button button-primary" type="submit">Log in</button>
+        </form>
+        <p class="switch-copy"><span id="auth-switch-label">New here?</span> <button id="auth-switch" class="text-button" type="button">Create an account</button></p>
+      </div>
+    </section>
+  </main>
+
+  <main id="notes-view" class="app-layout" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span> Private Notes</div>
+        <button id="new-note" class="button button-primary new-note" type="button"><span aria-hidden="true">＋</span> New note</button>
+      </div>
+      <div class="list-heading"><span>YOUR NOTES</span><span id="note-count">0</span></div>
+      <nav id="note-list" class="note-list" aria-label="Your notes"></nav>
+      <div class="sidebar-bottom">
+        <span id="account-email" class="account-email"></span>
+        <button id="logout" class="text-button" type="button">Log out</button>
+      </div>
+    </aside>
+
+    <section class="editor-panel" aria-label="Note editor">
+      <div id="empty-state" class="empty-state">
+        <div class="empty-symbol" aria-hidden="true">✳</div>
+        <h1>Your space to think.</h1>
+        <p>Choose a note or start a new one.</p>
+        <button id="empty-new-note" class="button button-primary" type="button">Write a note</button>
+      </div>
+
+      <form id="note-form" class="note-editor" hidden>
+        <div class="editor-toolbar">
+          <span id="edit-status" class="eyebrow">NEW NOTE</span>
+          <div class="toolbar-actions">
+            <button id="delete-note" class="button button-quiet danger" type="button" hidden>Delete</button>
+            <button id="save-note" class="button button-primary" type="submit">Save note</button>
+          </div>
+        </div>
+        <div class="editor-content">
+          <label class="visually-hidden" for="note-title">Title</label>
+          <input id="note-title" class="title-input" type="text" maxlength="120" required placeholder="Untitled thought">
+          <div id="note-date" class="note-date"></div>
+          <label class="visually-hidden" for="note-body">Note</label>
+          <textarea id="note-body" maxlength="20000" placeholder="Start writing here..."></textarea>
+          <p id="note-message" class="form-message" role="status" hidden></p>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

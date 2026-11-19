@@ -1,0 +1,11 @@
+node_modules
+data
+.git
+.gitignore
+.env
+coverage
+test
+README.md
+*.tar
+*.zip
+.DS_Store

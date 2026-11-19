@@ -1,0 +1,26 @@
+# Applies to every app folder in this workspace.
+# Each folder also keeps its own .gitignore; these are the shared rules.
+
+.DS_Store
+
+# Dependencies and runtime data
+node_modules/
+data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Release archives: prebuilt Docker images and source zips, hundreds of MB of
+# build output that each project's own build command regenerates.
+dist/
+*.tar
+*.tar.gz
+*.zip

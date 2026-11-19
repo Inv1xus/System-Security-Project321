@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Private Notes</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Private Notes</h1>
+      <div class="session" id="session-bar" hidden>
+        <span id="current-user" class="user-email"></span>
+        <button type="button" id="logout-button" class="btn btn-ghost">Log out</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Signed-out view -->
+      <section id="auth-view" class="card auth" hidden>
+        <div class="tabs" role="tablist">
+          <button type="button" id="tab-login" class="tab is-active" role="tab">Log in</button>
+          <button type="button" id="tab-signup" class="tab" role="tab">Sign up</button>
+        </div>
+
+        <form id="auth-form" autocomplete="on" novalidate>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="username"
+                 maxlength="254" placeholder="you@example.com" />
+
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required
+                 autocomplete="current-password" minlength="12" maxlength="128"
+                 placeholder="At least 12 characters" />
+
+          <p class="hint" id="password-hint" hidden>
+            Use at least 12 characters. Longer passphrases are stronger than short, complex ones.
+          </p>
+
+          <button type="submit" id="auth-submit" class="btn btn-primary">Log in</button>
+        </form>
+      </section>
+
+      <!-- Signed-in view -->
+      <section id="notes-view" hidden>
+        <div class="layout">
+          <aside class="card list-pane">
+            <div class="list-head">
+              <h2>Your notes</h2>
+              <button type="button" id="new-note" class="btn btn-primary btn-sm">New note</button>
+            </div>
+            <p class="empty" id="notes-empty" hidden>No notes yet. Create your first one.</p>
+            <ul id="notes-list" class="notes-list"></ul>
+          </aside>
+
+          <section class="card editor-pane">
+            <form id="note-form" novalidate>
+              <label for="note-title">Title</label>
+              <input id="note-title" name="title" type="text" maxlength="200" required
+                     autocomplete="off" placeholder="Note title" />
+
+              <label for="note-content">Note</label>
+              <textarea id="note-content" name="content" rows="16" maxlength="20000"
+                        placeholder="Write something private…"></textarea>
+
+              <div class="editor-actions">
+                <button type="submit" id="save-note" class="btn btn-primary">Save</button>
+                <button type="button" id="delete-note" class="btn btn-danger" hidden>Delete</button>
+                <button type="button" id="cancel-edit" class="btn btn-ghost">Clear</button>
+                <span class="meta" id="note-meta"></span>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
+
+      <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

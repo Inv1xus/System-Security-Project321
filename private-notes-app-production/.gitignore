@@ -1,0 +1,14 @@
+node_modules/
+data/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Built image artifacts (large binaries)
+dist/*.tar
+dist/*.tar.gz

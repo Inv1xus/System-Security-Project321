@@ -1,0 +1,10 @@
+node_modules
+.DS_Store
+data
+.env
+.git
+dist
+test
+*.db
+*.db-shm
+*.db-wal

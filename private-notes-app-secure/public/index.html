@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Private Notes</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✎</span><span>Private Notes</span></div>
+      <div class="account" id="account" hidden>
+        <span id="account-email"></span>
+        <button type="button" class="text-button" id="logout">Log out</button>
+      </div>
+    </header>
+
+    <section class="auth card" id="auth-view" aria-labelledby="auth-heading">
+      <p class="eyebrow">YOUR SPACE TO THINK</p>
+      <h1 id="auth-heading">Welcome back</h1>
+      <p class="muted" id="auth-description">Log in to see your notes.</p>
+      <form id="auth-form">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required>
+        <p class="hint" id="password-hint" hidden>Use at least 12 characters.</p>
+        <button class="primary-button" id="auth-submit" type="submit">Log in</button>
+      </form>
+      <p class="switch-line"><span id="switch-prompt">New here?</span> <button type="button" class="text-button" id="switch-auth">Create an account</button></p>
+    </section>
+
+    <section class="workspace" id="notes-view" hidden aria-label="Your notes">
+      <aside class="sidebar card">
+        <div class="sidebar-head"><h1>Your notes</h1><button type="button" class="new-button" id="new-note">+ New</button></div>
+        <ul id="notes-list" class="notes-list"></ul>
+        <p class="empty-list muted" id="empty-list" hidden>No notes yet. Start with a new one.</p>
+      </aside>
+      <section class="editor card" aria-label="Note editor">
+        <div id="editor-placeholder" class="editor-placeholder">
+          <span aria-hidden="true">✎</span>
+          <h2>A quiet place for your ideas</h2>
+          <p class="muted">Select a note or create a new one.</p>
+        </div>
+        <form id="note-form" hidden>
+          <div class="editor-actions">
+            <span id="editor-status" class="muted"></span>
+            <div class="action-group">
+              <button type="button" class="danger-button" id="delete-note" hidden>Delete</button>
+              <button type="submit" class="primary-button" id="save-note">Save note</button>
+            </div>
+          </div>
+          <label class="sr-only" for="note-title">Title</label>
+          <input id="note-title" class="title-input" type="text" placeholder="Untitled idea" maxlength="200" required>
+          <label class="sr-only" for="note-body">Note</label>
+          <textarea id="note-body" placeholder="Start writing…" maxlength="50000"></textarea>
+        </form>
+      </section>
+    </section>
+    <p id="message" class="message" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>

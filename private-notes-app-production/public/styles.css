@@ -1,0 +1,147 @@
+:root {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --surface-2: #1f232c;
+  --border: #2b303b;
+  --text: #e7e9ee;
+  --muted: #9aa3b2;
+  --accent: #5b8cff;
+  --accent-ink: #0b1020;
+  --danger: #ef5b5b;
+  --ok: #4ec98b;
+  --radius: 10px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #f0f2f5;
+    --border: #d9dde5;
+    --text: #1b1f27;
+    --muted: #5d6676;
+    --accent: #2f62e6;
+    --accent-ink: #ffffff;
+  }
+}
+
+* { box-sizing: border-box; }
+
+/* Must win over the display rules below, e.g. .session { display: flex }. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.topbar h1 { font-size: 18px; margin: 0; letter-spacing: 0.2px; }
+
+.session { display: flex; align-items: center; gap: 12px; }
+.user-email { color: var(--muted); font-size: 14px; max-width: 42ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.auth { max-width: 420px; margin: 48px auto 0; }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+
+.tab {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+.tab.is-active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+
+label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+
+input, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+}
+textarea { resize: vertical; min-height: 220px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.hint { color: var(--muted); font-size: 12.5px; margin: 8px 0 0; }
+
+.btn {
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.btn-danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+.btn-ghost { background: transparent; }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+
+#auth-submit { width: 100%; margin-top: 20px; }
+
+.layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+.list-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.list-head h2 { font-size: 15px; margin: 0; }
+
+.notes-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; max-height: 60vh; overflow-y: auto; }
+
+.note-button {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.note-item.is-selected .note-button { border-color: var(--accent); }
+.note-title { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.note-preview, .note-when { color: var(--muted); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.empty { color: var(--muted); font-size: 14px; }
+
+.editor-actions { display: flex; align-items: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.meta { color: var(--muted); font-size: 12.5px; margin-left: auto; }
+
+.status { margin: 20px auto 0; max-width: 1100px; padding: 10px 14px; border-radius: 8px; font-size: 14px; border: 1px solid var(--border); background: var(--surface); }
+.status--ok { border-color: var(--ok); color: var(--ok); }
+.status--error { border-color: var(--danger); color: var(--danger); }

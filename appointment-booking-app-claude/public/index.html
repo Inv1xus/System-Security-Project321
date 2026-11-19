@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Appointment Booking</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Appointment Booking</h1>
+    <div class="session" id="session" hidden>
+      <span id="who"></span>
+      <button type="button" id="logout" class="ghost">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <p class="banner" id="banner" hidden></p>
+
+    <!-- Signed out -->
+    <section id="authView" hidden>
+      <div class="cards">
+        <form class="card" id="loginForm">
+          <h2>Log in</h2>
+          <label>Email<input type="email" name="email" autocomplete="email" required></label>
+          <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+          <button type="submit">Log in</button>
+        </form>
+
+        <form class="card" id="signupForm">
+          <h2>Sign up</h2>
+          <label>Email<input type="email" name="email" autocomplete="email" required></label>
+          <label>Password<input type="password" name="password" autocomplete="new-password" minlength="8" required>
+            <small>At least 8 characters.</small>
+          </label>
+          <button type="submit">Create account</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Signed in as a user -->
+    <section id="userView" hidden>
+      <div class="card">
+        <h2>Available time slots</h2>
+        <table id="slotsTable">
+          <thead><tr><th>When</th><th>Length</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="empty" id="slotsEmpty" hidden>No free time slots right now.</p>
+      </div>
+
+      <div class="card">
+        <h2>My bookings</h2>
+        <table id="myBookingsTable">
+          <thead><tr><th>When</th><th>Length</th><th>Booked</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="empty" id="myBookingsEmpty" hidden>You have no bookings yet.</p>
+      </div>
+    </section>
+
+    <!-- Signed in as the admin -->
+    <section id="adminView" hidden>
+      <div class="card">
+        <h2>Add a time slot</h2>
+        <form id="slotForm" class="inline">
+          <label>Start<input type="datetime-local" name="startsAt" required></label>
+          <label>End<input type="datetime-local" name="endsAt" required></label>
+          <button type="submit">Add slot</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>All time slots</h2>
+        <table id="adminSlotsTable">
+          <thead><tr><th>When</th><th>Length</th><th>Status</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="empty" id="adminSlotsEmpty" hidden>No time slots yet.</p>
+      </div>
+
+      <div class="card">
+        <h2>All bookings</h2>
+        <table id="adminBookingsTable">
+          <thead><tr><th>When</th><th>Length</th><th>User</th><th>Booked</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="empty" id="adminBookingsEmpty" hidden>Nobody has booked anything yet.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
