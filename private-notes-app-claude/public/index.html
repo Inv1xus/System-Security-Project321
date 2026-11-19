@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Private Notes</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Private Notes</h1>
+      <div class="session" id="session" hidden>
+        <span id="who"></span>
+        <button type="button" id="logout-btn" class="ghost">Log out</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Signed out -->
+      <section id="auth-view" class="card" hidden>
+        <div class="tabs">
+          <button type="button" id="tab-login" class="tab active">Log in</button>
+          <button type="button" id="tab-signup" class="tab">Sign up</button>
+        </div>
+
+        <form id="auth-form" autocomplete="on">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" required
+                 minlength="3" maxlength="32" autocomplete="username" />
+
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required
+                 minlength="8" maxlength="200" autocomplete="current-password" />
+
+          <button type="submit" id="auth-submit" class="primary">Log in</button>
+        </form>
+        <p class="hint">Passwords must be at least 8 characters.</p>
+      </section>
+
+      <!-- Signed in -->
+      <section id="notes-view" hidden>
+        <div class="columns">
+          <div class="card editor">
+            <h2 id="editor-title">New note</h2>
+            <form id="note-form">
+              <input type="hidden" id="note-id" />
+              <label for="title">Title</label>
+              <input id="title" name="title" type="text" required maxlength="200" />
+
+              <label for="body">Note</label>
+              <textarea id="body" name="body" rows="10" maxlength="100000"></textarea>
+
+              <div class="row">
+                <button type="submit" class="primary" id="save-btn">Save note</button>
+                <button type="button" class="ghost" id="cancel-btn" hidden>Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="list">
+            <h2>Your notes <span class="count" id="count"></span></h2>
+            <p class="empty" id="empty" hidden>No notes yet. Write your first one.</p>
+            <ul id="notes"></ul>
+          </div>
+        </div>
+      </section>
+
+      <p id="message" class="message" hidden></p>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
