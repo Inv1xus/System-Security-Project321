@@ -11,7 +11,7 @@ user can create, view, edit and delete only their own notes.
 ## Folder structure
 
 ```
-private-notes-app-claude/
+private-notes-app-claudeOpus5High/
 ├── Dockerfile
 ├── .dockerignore
 ├── .gitignore

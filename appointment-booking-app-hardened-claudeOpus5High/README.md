@@ -12,7 +12,7 @@ The app listens on **port 3000**.
 ## Folder structure
 
 ```
-appointment-booking-app-hardened/
+appointment-booking-app-hardened-claudeOpus5High/
 ├── Dockerfile                  # multi-stage production image, runs as non-root
 ├── docker-compose.yml          # read-only rootfs, dropped capabilities, volume
 ├── .dockerignore

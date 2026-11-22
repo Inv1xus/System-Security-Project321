@@ -7,7 +7,7 @@ adds or removes time slots.
 ## Folder structure
 
 ```
-appointment-booking-app-claude/
+appointment-booking-app-claudeOpus5High/
 ├── Dockerfile
 ├── .dockerignore
 ├── .gitignore

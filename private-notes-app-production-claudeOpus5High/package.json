@@ -1,5 +1,5 @@
 {
-  "name": "private-notes-app-production",
+  "name": "private-notes-app-production-claudeOpus5High",
   "version": "1.0.0",
   "private": true,
   "description": "Private notes web app: signup/login/logout with per-user notes (Node.js + Express + SQLite)",

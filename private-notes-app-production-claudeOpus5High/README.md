@@ -11,7 +11,7 @@ create / view / edit / delete notes that only you can see.
 ## Folder structure
 
 ```
-private-notes-app-production/
+private-notes-app-production-claudeOpus5High/
 ├── Dockerfile                 # Multi-stage build, non-root runtime
 ├── docker-compose.yml         # Hardened run configuration + named volume
 ├── .dockerignore
@@ -72,11 +72,11 @@ SESSION_SECRET=$(node -e "console.log(require('crypto').randomBytes(32).toString
 ### Plain Docker
 
 ```bash
-docker build -t private-notes-app-production .
+docker build -t private-notes-app-production-claudeOpus5High .
 ```
 
 ```bash
-docker run -d --name private-notes -p 3000:3000 -v notes-data:/data --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges:true -e SESSION_SECRET="$(openssl rand -hex 32)" private-notes-app-production
+docker run -d --name private-notes -p 3000:3000 -v notes-data:/data --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges:true -e SESSION_SECRET="$(openssl rand -hex 32)" private-notes-app-production-claudeOpus5High
 ```
 
 Stop and remove:

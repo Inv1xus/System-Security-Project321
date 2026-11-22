@@ -5,7 +5,7 @@ A single-instance private notes web app using Node.js 24, Express 5, and SQLite.
 ## Folder structure
 
 ```text
-private-notes-app-secure/
+private-notes-app-secure-chatgptSol6High/
 ├── .dockerignore
 ├── .gitignore
 ├── Dockerfile

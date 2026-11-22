@@ -5,7 +5,7 @@ A single-container appointment booking app using Node.js 24, Express 5, and SQLi
 ## Folder structure
 
 ```text
-appointment-booking-app-secure/
+appointment-booking-app-default-chatgptSol6High/
 ├── .dockerignore
 ├── .env.example
 ├── .gitignore

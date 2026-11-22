@@ -5,7 +5,7 @@ A single-container appointment booking app built with Node.js 24, Express 5, and
 ## Folder structure
 
 ```text
-appointment-booking-app-production/
+appointment-booking-app-production-chatgptSol6High/
 ├── .dockerignore
 ├── .env.example
 ├── .gitignore

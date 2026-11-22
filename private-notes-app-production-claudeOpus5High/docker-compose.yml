@@ -1,7 +1,7 @@
 services:
   notes:
     build: .
-    image: private-notes-app-production
+    image: private-notes-app-production-claudeOpus5High
     container_name: private-notes
     init: true
     restart: unless-stopped

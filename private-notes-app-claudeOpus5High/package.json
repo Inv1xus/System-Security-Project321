@@ -1,9 +1,9 @@
 {
-  "name": "appointment-booking-app-claude",
+  "name": "private-notes-app-claudeOpus5High",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Appointment booking app: Express + SQLite, users book slots, admin manages them",
+  "description": "Private notes app: Express + SQLite, each user keeps their own notes",
   "engines": { "node": ">=22.5.0" },
   "scripts": {
     "start": "node src/server.js"
