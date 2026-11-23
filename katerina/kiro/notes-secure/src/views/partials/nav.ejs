@@ -1,0 +1,16 @@
+<nav class="navbar">
+  <a class="brand" href="/">📝 Notes</a>
+  <div class="nav-links">
+    <% if (currentUser) { %>
+      <span class="nav-user">Hello, <strong><%= currentUser %></strong></span>
+      <a href="/notes/new" class="btn btn-sm btn-primary">New Note</a>
+      <form action="/logout" method="POST" class="inline-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button type="submit" class="btn btn-sm btn-ghost">Log out</button>
+      </form>
+    <% } else { %>
+      <a href="/login" class="btn btn-sm btn-ghost">Log in</a>
+      <a href="/signup" class="btn btn-sm btn-primary">Sign up</a>
+    <% } %>
+  </div>
+</nav>

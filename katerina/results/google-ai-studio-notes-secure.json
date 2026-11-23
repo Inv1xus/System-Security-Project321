@@ -1,0 +1,178 @@
+{
+  "application": "google-ai-studio/notes-secure",
+  "harnessNode": "v24.9.0",
+  "node": "v24.9.0",
+  "installer": "1.4.5",
+  "lockMode": "reconciled in staging",
+  "dependencies": {
+    "express": "4.22.3",
+    "better-sqlite3": "13.2.0"
+  },
+  "platform": "darwin",
+  "architecture": "arm64",
+  "blocker": null,
+  "tests": [
+    {
+      "id": "T01.auth",
+      "expected": "Anonymous clients are denied access to the protected resource.",
+      "status": "Pass",
+      "actual": "HTTP 401",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.credentials",
+      "expected": "An incorrect password is denied.",
+      "status": "Pass",
+      "actual": "HTTP 401",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/auth.ts:99",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.crud",
+      "expected": "Owner can create, read, update and delete a note.",
+      "status": "Pass",
+      "actual": "Read, update, reread, delete, final read HTTP 200, 200, 200, 200, 404",
+      "assessment": "Functional baseline passed",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.read",
+      "expected": "Non-owner action is denied and owner state remains intact.",
+      "status": "Pass",
+      "actual": "Non-owner HTTP 404. Owner state intact true",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.update",
+      "expected": "Non-owner action is denied and owner state remains intact.",
+      "status": "Pass",
+      "actual": "Non-owner HTTP 404. Owner state intact true",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.delete",
+      "expected": "Non-owner action is denied and owner state remains intact.",
+      "status": "Pass",
+      "actual": "Non-owner HTTP 404. Owner state intact true",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T02.literal",
+      "expected": "Input with ordinary punctuation remains literal across storage and retrieval.",
+      "status": "Pass",
+      "actual": "Stored fixture matched literal input true",
+      "assessment": "Functional baseline passed",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T02.binding",
+      "expected": "The login lookup uses a SQL placeholder for the supplied account identifier.",
+      "status": "Pass",
+      "actual": "Reviewed source contains a bound account lookup.",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/auth.ts:99",
+      "mode": "source"
+    },
+    {
+      "id": "T02.injection",
+      "expected": "SQL inputs are evaluated for parameter binding.",
+      "status": "Skip",
+      "actual": "Runtime SQL injection was outside scope. See T02.binding for the source check.",
+      "assessment": "Untested",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "untested"
+    },
+    {
+      "id": "T03.storage",
+      "expected": "Inert markup is handled as text on the tested output path.",
+      "status": "Pass",
+      "actual": "JSON content equals fixture text true",
+      "assessment": "Functional baseline passed",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T03.browser",
+      "expected": "Browser DOM behavior is evaluated.",
+      "status": "Skip",
+      "actual": "Browser DOM behavior and script execution were not exercised.",
+      "assessment": "Untested",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "untested"
+    },
+    {
+      "id": "T04.cookie",
+      "expected": "Login cookie declares HttpOnly, SameSite and Secure under production or proxy-indicated HTTPS as applicable.",
+      "status": "Pass",
+      "actual": "HttpOnly true, SameSite true, Secure true with proxy HTTPS header.",
+      "assessment": "Successful security control",
+      "evidence": "server/auth.ts:159",
+      "mode": "runtime"
+    },
+    {
+      "id": "T04.csrf",
+      "expected": "Documented anti-CSRF controls reject an invalid authenticated write.",
+      "status": "Pass",
+      "actual": "HTTP 403",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/notes.ts:49",
+      "mode": "runtime"
+    },
+    {
+      "id": "T04.logout",
+      "expected": "Logout succeeds and returns a cookie-clearing header.",
+      "status": "Pass",
+      "actual": "HTTP 200. Clearing header present true",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/auth.ts:141",
+      "mode": "runtime"
+    },
+    {
+      "id": "T04.revocation",
+      "expected": "Logout removes one session record from the isolated store.",
+      "status": "Pass",
+      "actual": "Session row count decreased by 1",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/auth.ts:141",
+      "mode": "runtime"
+    },
+    {
+      "id": "T05.hash",
+      "expected": "Temporary passwords are salted bcrypt or scrypt values with distinct salts.",
+      "status": "Pass",
+      "actual": "Rows 2, expected format true, distinct salts true, plaintext false",
+      "assessment": "Successful security control",
+      "evidence": "server/auth.ts:47",
+      "mode": "runtime"
+    },
+    {
+      "id": "T06.profile",
+      "expected": "The second account profile exposes no password or session fields.",
+      "status": "Pass",
+      "actual": "Sensitive field present false",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/auth.ts:99",
+      "mode": "runtime"
+    },
+    {
+      "id": "T06.token",
+      "expected": "Login does not return a session token in the JSON body.",
+      "status": "Pass",
+      "actual": "Login JSON token field present false",
+      "assessment": "Successful security control",
+      "evidence": "server/routes/auth.ts:99",
+      "mode": "runtime"
+    }
+  ]
+}

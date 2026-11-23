@@ -1,0 +1,6 @@
+{
+  "name": "Cadence",
+  "description": "Appointment booking and slot management application with user reservations and admin scheduling controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

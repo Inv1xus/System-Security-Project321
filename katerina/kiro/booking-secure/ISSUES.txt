@@ -1,0 +1,8 @@
+Kiro Secure Appointment Booking — Modifications
+- Content Security Policy (CSP) conflict: Kiro generated inline JavaScript and onclick handlers that violated its own CSP. Moved JavaScript to app.js and replaced inline handlers with event listeners.
+
+- HTTPS incompatibility: Helmet forced HTTPS requests, preventing JavaScript from loading on the local HTTP Docker server. Added a LOCAL_HTTP_TEST configuration to disable HTTPS upgrading during local testing only.
+
+- File permission error: Docker returned HTTP 500 because the non-root application process could not read app.js. Corrected the file permissions using chmod 644.
+
+These were functional and deployment defects, not confirmed exploitable security vulnerabilities.

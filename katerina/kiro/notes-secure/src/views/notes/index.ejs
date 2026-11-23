@@ -1,0 +1,29 @@
+<%- include('../partials/head', { pageTitle: 'My Notes' }) %>
+<%- include('../partials/nav') %>
+
+<main class="container">
+  <div class="page-header">
+    <h1>My Notes</h1>
+    <a href="/notes/new" class="btn btn-primary">+ New Note</a>
+  </div>
+
+  <% if (notes.length === 0) { %>
+    <div class="empty-state">
+      <p>You don't have any notes yet.</p>
+      <a href="/notes/new" class="btn btn-primary">Create your first note</a>
+    </div>
+  <% } else { %>
+    <ul class="notes-list">
+      <% notes.forEach(function(note) { %>
+        <li class="note-card">
+          <a href="/notes/<%= note.id %>" class="note-title"><%= note.title %></a>
+          <span class="note-meta">
+            Updated <%= new Date(note.updated_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+          </span>
+        </li>
+      <% }); %>
+    </ul>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

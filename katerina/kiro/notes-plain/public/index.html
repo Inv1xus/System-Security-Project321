@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f4f4f5;
+      color: #18181b;
+      min-height: 100vh;
+    }
+
+    /* ---- Layout ---- */
+    #app { display: flex; flex-direction: column; min-height: 100vh; }
+
+    header {
+      background: #18181b;
+      color: #fff;
+      padding: 0 1.5rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: .02em; }
+    header .user-info { display: flex; align-items: center; gap: .75rem; font-size: .875rem; }
+
+    main { flex: 1; display: flex; overflow: hidden; }
+
+    /* ---- Auth screens ---- */
+    .auth-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .auth-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.12);
+    }
+    .auth-box h2 { margin-bottom: 1.25rem; font-size: 1.25rem; }
+    .auth-box p.switch { margin-top: 1rem; font-size: .875rem; text-align: center; }
+
+    /* ---- Notes layout ---- */
+    #notes-view {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    #sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: #fff;
+      border-right: 1px solid #e4e4e7;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #sidebar-header {
+      padding: .75rem 1rem;
+      border-bottom: 1px solid #e4e4e7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #sidebar-header span { font-size: .8rem; font-weight: 600; color: #71717a; text-transform: uppercase; letter-spacing: .05em; }
+    #note-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+    }
+    #note-list li {
+      padding: .75rem 1rem;
+      border-bottom: 1px solid #f4f4f5;
+      cursor: pointer;
+      transition: background .1s;
+    }
+    #note-list li:hover { background: #f4f4f5; }
+    #note-list li.active { background: #eff6ff; }
+    #note-list li .note-title {
+      font-size: .9rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #note-list li .note-date { font-size: .75rem; color: #71717a; margin-top: .2rem; }
+
+    #editor-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+    }
+    #editor-toolbar {
+      padding: .6rem 1rem;
+      border-bottom: 1px solid #e4e4e7;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    #note-title-input {
+      flex: 1;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #18181b;
+    }
+    #note-body {
+      flex: 1;
+      padding: 1rem;
+      font-size: .925rem;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: inherit;
+      color: #18181b;
+      line-height: 1.6;
+    }
+    #empty-state {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a1a1aa;
+      font-size: .95rem;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    /* ---- Shared form elements ---- */
+    label { display: block; font-size: .875rem; font-weight: 500; margin-bottom: .3rem; color: #3f3f46; }
+    input[type="text"], input[type="password"] {
+      display: block;
+      width: 100%;
+      padding: .5rem .75rem;
+      border: 1px solid #d4d4d8;
+      border-radius: 6px;
+      font-size: .9rem;
+      margin-bottom: .9rem;
+      outline: none;
+      transition: border-color .15s;
+    }
+    input:focus { border-color: #3b82f6; }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      font-size: .875rem;
+      font-weight: 500;
+      padding: .45rem .9rem;
+      transition: opacity .15s, background .15s;
+    }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+
+    .btn-primary { background: #3b82f6; color: #fff; width: 100%; padding: .6rem; }
+    .btn-primary:hover:not(:disabled) { background: #2563eb; }
+
+    .btn-icon {
+      background: transparent;
+      color: #71717a;
+      padding: .3rem .5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+    }
+    .btn-icon:hover { background: #f4f4f5; color: #18181b; }
+    .btn-icon.danger:hover { background: #fee2e2; color: #dc2626; }
+
+    .btn-sm { background: #3b82f6; color: #fff; font-size: .8rem; padding: .35rem .7rem; }
+    .btn-sm:hover { background: #2563eb; }
+
+    .btn-ghost { background: transparent; color: #71717a; }
+    .btn-ghost:hover { background: #f4f4f5; color: #18181b; }
+
+    .btn-logout { background: #3f3f46; color: #fff; }
+    .btn-logout:hover { background: #52525b; }
+
+    .error-msg {
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: 6px;
+      padding: .5rem .75rem;
+      font-size: .85rem;
+      margin-bottom: .75rem;
+    }
+
+    .hidden { display: none !important; }
+
+    a.link { color: #3b82f6; text-decoration: none; cursor: pointer; }
+    a.link:hover { text-decoration: underline; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      #sidebar { width: 100%; }
+      #editor-panel { display: none; }
+      #notes-view.show-editor #sidebar { display: none; }
+      #notes-view.show-editor #editor-panel { display: flex; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <h1>📝 Notes</h1>
+    <div class="user-info hidden" id="header-user">
+      <span id="header-username"></span>
+      <button class="btn-logout" id="btn-logout">Log out</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- AUTH: Login -->
+    <div class="auth-wrapper" id="view-login">
+      <div class="auth-box">
+        <h2>Log in</h2>
+        <div class="error-msg hidden" id="login-error"></div>
+        <label for="login-username">Username</label>
+        <input id="login-username" type="text" autocomplete="username" />
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" autocomplete="current-password" />
+        <button class="btn-primary" id="btn-login">Log in</button>
+        <p class="switch">No account? <a class="link" id="go-signup">Sign up</a></p>
+      </div>
+    </div>
+
+    <!-- AUTH: Sign up -->
+    <div class="auth-wrapper hidden" id="view-signup">
+      <div class="auth-box">
+        <h2>Sign up</h2>
+        <div class="error-msg hidden" id="signup-error"></div>
+        <label for="signup-username">Username</label>
+        <input id="signup-username" type="text" autocomplete="username" />
+        <label for="signup-password">Password</label>
+        <input id="signup-password" type="password" autocomplete="new-password" />
+        <button class="btn-primary" id="btn-signup">Create account</button>
+        <p class="switch">Have an account? <a class="link" id="go-login">Log in</a></p>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div id="notes-view" class="hidden">
+
+      <aside id="sidebar">
+        <div id="sidebar-header">
+          <span>My Notes</span>
+          <button class="btn-sm" id="btn-new-note">+ New</button>
+        </div>
+        <ul id="note-list"></ul>
+      </aside>
+
+      <section id="editor-panel" class="hidden">
+        <div id="editor-toolbar">
+          <button class="btn-icon" id="btn-back" title="Back to list">←</button>
+          <input id="note-title-input" type="text" placeholder="Note title…" />
+          <button class="btn-sm" id="btn-save">Save</button>
+          <button class="btn-icon danger" id="btn-delete" title="Delete note">🗑</button>
+        </div>
+        <textarea id="note-body" placeholder="Write your note here…"></textarea>
+      </section>
+
+      <div id="empty-state">
+        <span>Select a note or create a new one</span>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- State ----
+  let currentNoteId = null;
+  let notes = [];
+  let dirty = false;
+
+  // ---- Helpers ----
+  const $ = id => document.getElementById(id);
+
+  function show(...ids) { ids.forEach(id => $(id).classList.remove('hidden')); }
+  function hide(...ids) { ids.forEach(id => $(id).classList.add('hidden')); }
+
+  function showError(elId, msg) {
+    const el = $(elId);
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+  function clearError(elId) { $(elId).classList.add('hidden'); }
+
+  async function api(method, path, body) {
+    const opts = {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    };
+    if (body !== undefined) opts.body = JSON.stringify(body);
+    const res = await fetch(path, opts);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  }
+
+  function formatDate(str) {
+    if (!str) return '';
+    const d = new Date(str.endsWith('Z') ? str : str + 'Z');
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // ---- Render ----
+  function renderNoteList() {
+    const ul = $('note-list');
+    ul.innerHTML = '';
+    if (notes.length === 0) {
+      ul.innerHTML = '<li style="color:#a1a1aa;font-size:.85rem;padding:.75rem 1rem;">No notes yet.</li>';
+      return;
+    }
+    notes.forEach(n => {
+      const li = document.createElement('li');
+      if (n.id === currentNoteId) li.classList.add('active');
+      li.innerHTML = `
+        <div class="note-title">${escHtml(n.title)}</div>
+        <div class="note-date">${formatDate(n.updated_at)}</div>
+      `;
+      li.addEventListener('click', () => openNote(n.id));
+      ul.appendChild(li);
+    });
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ---- Views ----
+  function showAuth() {
+    hide('notes-view', 'header-user');
+    show('view-login');
+    hide('view-signup');
+  }
+
+  function showNotes(username) {
+    hide('view-login', 'view-signup');
+    show('notes-view', 'header-user');
+    $('header-username').textContent = username;
+    closeEditor();
+    loadNotes();
+  }
+
+  function closeEditor() {
+    currentNoteId = null;
+    dirty = false;
+    hide('editor-panel');
+    show('empty-state');
+    $('notes-view').classList.remove('show-editor');
+    renderNoteList();
+  }
+
+  function openEditor(note) {
+    currentNoteId = note.id;
+    dirty = false;
+    $('note-title-input').value = note.title;
+    $('note-body').value = note.body;
+    hide('empty-state');
+    show('editor-panel');
+    $('notes-view').classList.add('show-editor');
+    renderNoteList();
+    $('note-title-input').focus();
+  }
+
+  // ---- API calls ----
+  async function checkSession() {
+    try {
+      const { user } = await api('GET', '/api/me');
+      if (user) { showNotes(user.username); }
+      else { showAuth(); }
+    } catch { showAuth(); }
+  }
+
+  async function loadNotes() {
+    try {
+      notes = await api('GET', '/api/notes');
+      renderNoteList();
+    } catch (e) { console.error(e); }
+  }
+
+  async function openNote(id) {
+    if (dirty && currentNoteId) {
+      if (!confirm('You have unsaved changes. Discard them?')) return;
+    }
+    try {
+      const note = await api('GET', `/api/notes/${id}`);
+      openEditor(note);
+    } catch (e) { alert(e.message); }
+  }
+
+  async function saveNote() {
+    const title = $('note-title-input').value.trim();
+    const body  = $('note-body').value;
+    if (!title) { alert('Title is required.'); return; }
+
+    try {
+      let note;
+      if (currentNoteId) {
+        note = await api('PUT', `/api/notes/${currentNoteId}`, { title, body });
+      } else {
+        note = await api('POST', '/api/notes', { title, body });
+      }
+      dirty = false;
+      await loadNotes();
+      currentNoteId = note.id;
+      renderNoteList();
+      $('note-title-input').value = note.title;
+    } catch (e) { alert(e.message); }
+  }
+
+  async function deleteNote() {
+    if (!currentNoteId) return;
+    if (!confirm('Delete this note? This cannot be undone.')) return;
+    try {
+      await api('DELETE', `/api/notes/${currentNoteId}`);
+      notes = notes.filter(n => n.id !== currentNoteId);
+      closeEditor();
+    } catch (e) { alert(e.message); }
+  }
+
+  function newNote() {
+    if (dirty && currentNoteId) {
+      if (!confirm('You have unsaved changes. Discard them?')) return;
+    }
+    currentNoteId = null;
+    dirty = false;
+    $('note-title-input').value = '';
+    $('note-body').value = '';
+    hide('empty-state');
+    show('editor-panel');
+    $('notes-view').classList.add('show-editor');
+    renderNoteList();
+    $('note-title-input').focus();
+  }
+
+  // ---- Event wiring ----
+
+  // Auth
+  $('go-signup').addEventListener('click', () => { hide('view-login'); show('view-signup'); clearError('signup-error'); });
+  $('go-login').addEventListener('click',  () => { hide('view-signup'); show('view-login'); clearError('login-error'); });
+
+  $('btn-login').addEventListener('click', async () => {
+    clearError('login-error');
+    const username = $('login-username').value.trim();
+    const password = $('login-password').value;
+    try {
+      const { username: u } = await api('POST', '/api/login', { username, password });
+      $('login-password').value = '';
+      showNotes(u);
+    } catch (e) { showError('login-error', e.message); }
+  });
+
+  $('btn-signup').addEventListener('click', async () => {
+    clearError('signup-error');
+    const username = $('signup-username').value.trim();
+    const password = $('signup-password').value;
+    try {
+      const { username: u } = await api('POST', '/api/signup', { username, password });
+      $('signup-password').value = '';
+      showNotes(u);
+    } catch (e) { showError('signup-error', e.message); }
+  });
+
+  // Allow Enter key on auth forms
+  ['login-username','login-password'].forEach(id =>
+    $(id).addEventListener('keydown', e => { if (e.key === 'Enter') $('btn-login').click(); }));
+  ['signup-username','signup-password'].forEach(id =>
+    $(id).addEventListener('keydown', e => { if (e.key === 'Enter') $('btn-signup').click(); }));
+
+  $('btn-logout').addEventListener('click', async () => {
+    await api('POST', '/api/logout');
+    notes = []; currentNoteId = null; dirty = false;
+    showAuth();
+  });
+
+  // Notes
+  $('btn-new-note').addEventListener('click', newNote);
+  $('btn-save').addEventListener('click', saveNote);
+  $('btn-delete').addEventListener('click', deleteNote);
+  $('btn-back').addEventListener('click', () => {
+    if (dirty && !confirm('You have unsaved changes. Discard them?')) return;
+    closeEditor();
+  });
+
+  // Track dirty state
+  $('note-title-input').addEventListener('input', () => { dirty = true; });
+  $('note-body').addEventListener('input', () => { dirty = true; });
+
+  // Ctrl+S / Cmd+S to save
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      if (!$('editor-panel').classList.contains('hidden')) saveNote();
+    }
+  });
+
+  // ---- Init ----
+  checkSession();
+})();
+</script>
+</body>
+</html>

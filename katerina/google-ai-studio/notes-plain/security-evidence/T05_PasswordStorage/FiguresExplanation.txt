@@ -1,0 +1,4 @@
+**Figure T05-B. Verification of Stored Password Hashes in SQLite.** Inspection of the VaultNotes SQLite
+database confirmed that the examined user accounts contained bcrypt-formatted password hashes with a
+length of 60 characters. These findings are consistent with the password-hashing implementation
+identified in the source code, and no plaintext passwords were observed in the inspected records.

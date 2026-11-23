@@ -1,0 +1,4 @@
+Figure T04-A/B. Verification of the Kiro plain-prompt application's session-secret
+configuration. The Docker environment does not define SESSION_SECRET,
+causing Express to use the predictable hardcoded fallback value. This
+weakens session integrity protections.

@@ -1,0 +1,13 @@
+node_modules
+dist
+data
+*.db
+*.db-wal
+*.db-shm
+.session_secret
+.env
+.env.*
+.git
+.gitignore
+.DS_Store
+*.log

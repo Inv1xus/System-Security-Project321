@@ -1,0 +1,14 @@
+**Figure T04-A. Hardcoded JWT Signing Secret.** Source-code inspection identified a hardcoded fallback
+value for the JWT signing secret in `server/auth.ts`. This introduces a security risk if the application
+runs without a securely configured environment variable.
+
+**Figure T04-B. Verification of the JWT Signing Secret in the Local Docker Environment.** Terminal inspection
+ confirmed that the VaultNotes Docker container was configured with a predictable JWT signing secret. This
+ configuration enabled an attacker with knowledge of the secret to generate valid authentication tokens,
+ creating a potential authentication bypass vulnerability.
+
+ **Figure T04-C. Successful JWT Forgery and Unauthorized Note Retrieval.** A manually generated JSON Web Token (JWT),
+ signed using the predictable secret configured in the local Docker environment, was submitted to the VaultNotes API.
+ The server returned HTTP 200 OK and disclosed private note ID 5 belonging to User 1 (ID 2). This demonstrates that
+ knowledge of the JWT signing secret allowed an attacker to impersonate another user and bypass authentication controls
+ without possessing the legitimate user's password.

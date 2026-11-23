@@ -1,0 +1,6 @@
+{
+  "name": "VaultNotes - Private Notes App",
+  "description": "Secure private notes web application with user authentication, SQLite database, rich note management, and Docker support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

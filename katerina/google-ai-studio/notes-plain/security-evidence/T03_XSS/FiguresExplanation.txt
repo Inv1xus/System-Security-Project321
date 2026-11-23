@@ -1,0 +1,3 @@
+**Figure T03-A. Stored Cross-Site Scripting Test.** An HTML payload containing a JavaScript event handler
+was saved in a private note and subsequently retrieved after a new login. The application displayed the payload
+as literal text, and no JavaScript execution was observed, indicating that the tested input did not result in stored XSS.

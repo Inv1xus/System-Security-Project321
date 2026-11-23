@@ -1,0 +1,40 @@
+# macOS
+.DS_Store
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# SQLite databases and temporary files
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+*.sqlite-shm
+*.sqlite-wal
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Editor settings
+.vscode/
+.idea/
+# Local backup files
+*.bak

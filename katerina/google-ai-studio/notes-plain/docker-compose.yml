@@ -1,0 +1,16 @@
+services:
+  vaultnotes:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vaultnotes-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - JWT_SECRET=${JWT_SECRET:?Set JWT_SECRET before starting VaultNotes}
+    volumes:
+      # Mount host directory for persistent SQLite database
+      - ./data:/app/data

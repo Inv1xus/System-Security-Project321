@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Booking</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --danger: #dc2626;
+      --danger-dark: #b91c1c;
+      --success: #16a34a;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 8px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    header h1 { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+
+    #nav-user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    #nav-username { color: var(--muted); }
+
+    main {
+      max-width: 820px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .form-group { margin-bottom: 0.875rem; }
+    .form-group label { display: block; font-size: 0.8125rem; font-weight: 500; margin-bottom: 0.3rem; }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="datetime-local"],
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus { border-color: var(--primary); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.1rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: var(--danger-dark); }
+
+    .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8125rem; }
+
+    .row-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+    .msg {
+      padding: 0.6rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .msg-error   { background: #fee2e2; color: var(--danger); }
+    .msg-success { background: #dcfce7; color: var(--success); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th { font-weight: 600; color: var(--muted); background: var(--bg); }
+
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.15s;
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .hidden { display: none !important; }
+
+    #auth-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: inherit;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #dbeafe;
+      color: var(--primary-dark);
+    }
+
+    .badge-admin { background: #fef3c7; color: #92400e; }
+
+    @media (max-width: 540px) {
+      table { font-size: 0.8125rem; }
+      th, td { padding: 0.5rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📅 Appointment Booking</h1>
+  <div id="nav-user" class="hidden">
+    <span id="nav-username"></span>
+    <button class="btn btn-sm" id="btn-logout" style="background:#f1f5f9;color:var(--text)">Log out</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== AUTH SECTION ===== -->
+  <div id="section-auth" class="card">
+    <div id="auth-tabs">
+      <button class="tab active" data-action="auth-login">Log in</button>
+      <button class="tab" data-action="auth-register">Sign up</button>
+    </div>
+
+    <div id="tab-login">
+      <div class="form-group">
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" autocomplete="username" maxlength="32" />
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" autocomplete="current-password" maxlength="128" />
+      </div>
+      <button class="btn btn-primary" data-action="login">Log in</button>
+      <div id="msg-login"></div>
+    </div>
+
+    <div id="tab-register" class="hidden">
+      <div class="form-group">
+        <label for="reg-username">Username</label>
+        <input type="text" id="reg-username" autocomplete="username" maxlength="32" />
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password" autocomplete="new-password" maxlength="128" />
+      </div>
+      <button class="btn btn-primary" data-action="register">Create account</button>
+      <div id="msg-register"></div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN APP ===== -->
+  <div id="section-app" class="hidden">
+
+    <!-- Tab navigation -->
+    <div class="tab-bar">
+      <button class="tab active" data-action="tab-available">Available Slots</button>
+      <button class="tab" data-action="tab-mybookings">My Bookings</button>
+      <button class="tab hidden" id="tab-admin" data-action="tab-admin">Admin</button>
+    </div>
+
+    <!-- Available Slots -->
+    <div id="pane-available" class="card">
+      <h2>Available Time Slots</h2>
+      <div id="msg-slots"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date &amp; Time</th>
+            <th>Duration</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="slots-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- My Bookings -->
+    <div id="pane-mybookings" class="card hidden">
+      <h2>My Bookings</h2>
+      <div id="msg-mybookings"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date &amp; Time</th>
+            <th>Duration</th>
+            <th>Booked at</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="bookings-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="pane-admin" class="card hidden">
+      <h2>Admin Panel</h2>
+
+      <div style="margin-bottom:1.5rem">
+        <h3 style="font-size:0.9rem;margin-bottom:0.75rem">Add Time Slot</h3>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:flex-end">
+          <div class="form-group" style="margin:0;flex:1;min-width:180px">
+            <label for="admin-slot-time">Date &amp; Time</label>
+            <input type="datetime-local" id="admin-slot-time" />
+          </div>
+          <div class="form-group" style="margin:0;width:120px">
+            <label for="admin-slot-dur">Duration (min)</label>
+            <input type="number" id="admin-slot-dur" value="30" min="5" max="480" />
+          </div>
+          <button class="btn btn-primary" data-action="add-slot">Add Slot</button>
+        </div>
+        <div id="msg-admin-add"></div>
+      </div>
+
+      <h3 style="font-size:0.9rem;margin-bottom:0.75rem">All Bookings</h3>
+      <div id="msg-admin"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Date &amp; Time</th>
+            <th>Duration</th>
+            <th>Booked at</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="admin-bookings-tbody"></tbody>
+      </table>
+
+      <h3 style="font-size:0.9rem;margin:1.25rem 0 0.75rem">All Slots</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date &amp; Time</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="admin-slots-tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+
+<script src="/app.js" defer></script>
+</body>
+</html>

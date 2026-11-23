@@ -1,0 +1,7 @@
+Figure T02-A. SQL Injection Login Attempt. A SQL injection payload was submitted through the username field with
+an incorrect password. The application rejected the authentication attempt, and no unauthorized access was observed.
+
+**Figure T02-B. Parameterized SQL Query in the Authentication Endpoint.** Source-code inspection of `server/routes.ts`
+confirmed that the login functionality uses a parameterized SQL query with a `?` placeholder and `.get(trimmedUsername)`
+for parameter binding. This prevents the username input from altering the SQL query structure, providing protection
+against SQL injection through this parameter.

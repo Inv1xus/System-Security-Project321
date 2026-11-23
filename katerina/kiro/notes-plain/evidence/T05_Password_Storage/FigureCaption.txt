@@ -1,0 +1,4 @@
+Figure T05-A. Inspection of the SQLite users table in the Kiro plain-prompt application.
+All four test accounts contain 60-character bcrypt password hashes with a cost factor of
+12, confirming that passwords are not stored in plaintext in the inspected database
+records.

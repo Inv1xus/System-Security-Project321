@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – BookIt</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f4f6f8; color: #1a1a2e; }
+    header { background: #1a1a2e; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 1.3rem; }
+    header h1 a { color: #fff; text-decoration: none; }
+    .user-info { font-size: 0.9rem; color: #ccc; }
+    .user-info button { background: none; border: 1px solid #666; color: #ccc; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; margin-left: 1rem; }
+    .user-info button:hover { background: #333; }
+    main { max-width: 860px; margin: 2rem auto; padding: 0 1rem; }
+    h2 { margin-bottom: 1rem; font-size: 1.3rem; }
+    .section { background: #fff; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 2px solid #e2e8f0; color: #555; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .04em; }
+    td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #f1f5f9; }
+    tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-red   { background: #fee2e2; color: #b91c1c; }
+    .badge-blue  { background: #dbeafe; color: #1d4ed8; }
+    .btn-sm { padding: 0.3rem 0.8rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+    .btn-book   { background: #3b82f6; color: #fff; }
+    .btn-book:hover   { background: #2563eb; }
+    .btn-cancel { background: #ef4444; color: #fff; }
+    .btn-cancel:hover { background: #dc2626; }
+    .empty { color: #999; font-style: italic; padding: 0.5rem 0; }
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #1a1a2e; color: #fff; padding: 0.75rem 1.2rem; border-radius: 8px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="index.html">📅 BookIt</a></h1>
+    <div class="user-info">
+      <span id="welcomeMsg"></span>
+      <button onclick="logout()">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="section">
+      <h2>Available Time Slots</h2>
+      <table id="slotsTable">
+        <thead>
+          <tr>
+            <th>Date</th><th>Start</th><th>End</th><th>Availability</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="slotsBody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>My Bookings</h2>
+      <table id="bookingsTable">
+        <thead>
+          <tr>
+            <th>Date</th><th>Start</th><th>End</th><th>Booked On</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsBody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Guard: redirect if not logged in
+    async function init() {
+      const me = await fetch('/api/auth/me').then(r => r.json());
+      if (!me.loggedIn) return location.href = 'login.html';
+      if (me.role === 'admin') return location.href = 'admin.html';
+      document.getElementById('welcomeMsg').textContent = `Hi, ${me.username}`;
+      loadSlots();
+      loadBookings();
+    }
+
+    async function loadSlots() {
+      const slots = await fetch('/api/slots').then(r => r.json());
+      const tbody = document.getElementById('slotsBody');
+      if (!slots.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty">No slots available yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = slots.map(s => `
+        <tr>
+          <td>${formatDate(s.date)}</td>
+          <td>${s.start_time}</td>
+          <td>${s.end_time}</td>
+          <td>
+            ${s.available > 0
+              ? `<span class="badge badge-green">${s.available} open</span>`
+              : `<span class="badge badge-red">Full</span>`}
+          </td>
+          <td>
+            ${s.my_booking
+              ? `<span class="badge badge-blue">Booked</span>`
+              : s.available > 0
+                ? `<button class="btn-sm btn-book" onclick="book(${s.id})">Book</button>`
+                : '—'}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadBookings() {
+      const bookings = await fetch('/api/bookings').then(r => r.json());
+      const tbody = document.getElementById('bookingsBody');
+      if (!bookings.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty">You have no bookings yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = bookings.map(b => `
+        <tr>
+          <td>${formatDate(b.date)}</td>
+          <td>${b.start_time}</td>
+          <td>${b.end_time}</td>
+          <td>${formatDateTime(b.created_at)}</td>
+          <td><button class="btn-sm btn-cancel" onclick="cancel(${b.booking_id})">Cancel</button></td>
+        </tr>
+      `).join('');
+    }
+
+    async function book(slotId) {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slot_id: slotId })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Slot booked!');
+        loadSlots();
+        loadBookings();
+      } else {
+        showToast(data.error || 'Booking failed', true);
+      }
+    }
+
+    async function cancel(bookingId) {
+      if (!confirm('Cancel this booking?')) return;
+      const res = await fetch(`/api/bookings/${bookingId}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Booking cancelled.');
+        loadSlots();
+        loadBookings();
+      } else {
+        showToast(data.error || 'Could not cancel', true);
+      }
+    }
+
+    async function logout() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      location.href = 'login.html';
+    }
+
+    function formatDate(d) {
+      // d is "YYYY-MM-DD"
+      const [y, m, day] = d.split('-');
+      return `${day}/${m}/${y}`;
+    }
+
+    function formatDateTime(dt) {
+      return dt ? dt.replace('T', ' ').substring(0, 16) : '';
+    }
+
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.background = isError ? '#b91c1c' : '#1a1a2e';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    init();
+  </script>
+</body>
+</html>
