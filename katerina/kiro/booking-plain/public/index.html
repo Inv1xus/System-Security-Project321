@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking App</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f4f6f8; color: #1a1a2e; }
+    header { background: #1a1a2e; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 1.3rem; }
+    header nav a { color: #ccc; text-decoration: none; margin-left: 1.2rem; font-size: 0.95rem; }
+    header nav a:hover { color: #fff; }
+    main { max-width: 700px; margin: 4rem auto; text-align: center; padding: 0 1rem; }
+    main h2 { font-size: 2rem; margin-bottom: 1rem; }
+    main p { color: #555; margin-bottom: 2rem; }
+    .btn { display: inline-block; padding: 0.7rem 1.6rem; border-radius: 6px; text-decoration: none; font-size: 1rem; margin: 0.4rem; }
+    .btn-primary { background: #3b82f6; color: #fff; }
+    .btn-secondary { background: #e2e8f0; color: #1a1a2e; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📅 BookIt</h1>
+    <nav>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Book your appointment</h2>
+    <p>Sign in to view available time slots and manage your bookings.</p>
+    <a class="btn btn-primary" href="login.html">Log in</a>
+    <a class="btn btn-secondary" href="register.html">Create account</a>
+  </main>
+  <script>
+    // Redirect already-logged-in users
+    fetch('/api/auth/me').then(r => r.json()).then(data => {
+      if (data.loggedIn) {
+        location.href = data.role === 'admin' ? 'admin.html' : 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

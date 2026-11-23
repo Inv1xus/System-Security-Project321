@@ -1,0 +1,14 @@
+**Figure T06-A. JWT Exposure in the Login API Response.** Inspection of the VaultNotes authentication
+endpoint (`POST /api/auth/login`) revealed that the server returns a JSON Web Token (JWT) in the response
+body following successful authentication, despite also storing the token in an HTTP-only cookie. Returning
+the JWT in the response body makes it accessible to client-side JavaScript, potentially increasing the risk of
+token exposure if the application is affected by cross-site scripting (XSS) or other client-side vulnerabilities.
+Although no token theft was demonstrated during testing, this behavior represents an unnecessary exposure of
+authentication credentials. The token value has been redacted from the screenshot for security purposes.
+This is not a confirmed token-theft vulnerability. It is an observed design weakness that increases potential exposure.
+
+**Figure T06-B. Inspection of the Authenticated User Profile Response.** An authenticated GET request to the
+`/api/auth/me` endpoint returned HTTP 200 OK and a JSON object containing the current user's identifier, username,
+and email address. The response did not contain password hashes, plaintext passwords, or authentication tokens.
+This indicates that the tested endpoint limits its response to basic account information and does not directly
+disclose sensitive authentication credentials.

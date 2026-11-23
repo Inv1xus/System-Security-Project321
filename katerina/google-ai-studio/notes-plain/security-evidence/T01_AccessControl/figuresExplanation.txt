@@ -1,0 +1,13 @@
+**Figure T01-A. Unauthorized note retrieval attempt. While authenticated as User 2, a GET request targeting
+User 1's note (ID 5) returned HTTP 404, indicating that the application denied access to the requested resource.
+
+**Figure T01-B. Authorized Note Retrieval.** While authenticated as User 2, a GET request targeting their
+own note (ID 7) returned HTTP 200 OK and the corresponding note data, confirming that the endpoint permits authorized access.
+
+**Figure T01-C. Unauthorized Note Modification Attempt.** While authenticated as User 2, a PUT request was submitted
+to modify a private note belonging to User 1 (note ID 5). The server returned HTTP 404, indicating that the
+unauthorized modification request was rejected.
+
+**Figure T01-D. Unauthorized Note Deletion Attempt.** While authenticated as User 2, a DELETE request was submitted
+against User 1's private note (ID 5). The server returned HTTP 404, indicating that the deletion request was rejected.
+Subsequent verification of the original account confirmed whether the note remained intact.

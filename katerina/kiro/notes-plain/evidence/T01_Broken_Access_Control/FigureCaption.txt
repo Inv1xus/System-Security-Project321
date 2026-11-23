@@ -1,0 +1,3 @@
+Figure T01-A. Broken access control test in the Kiro plain-prompt application.
+An authenticated user (Bob) attempts to retrieve another user's private note
+(Alice, ID 1). The server returns HTTP 404, preventing unauthorized access.

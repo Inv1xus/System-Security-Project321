@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register – BookIt</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f4f6f8; color: #1a1a2e; }
+    header { background: #1a1a2e; color: #fff; padding: 1rem 2rem; }
+    header h1 { font-size: 1.3rem; }
+    header h1 a { color: #fff; text-decoration: none; }
+    .card { max-width: 420px; margin: 4rem auto; background: #fff; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    h2 { margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 1rem; }
+    input { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; }
+    input:focus { outline: none; border-color: #3b82f6; }
+    button { margin-top: 1.5rem; width: 100%; padding: 0.75rem; background: #3b82f6; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; }
+    button:hover { background: #2563eb; }
+    .msg { margin-top: 1rem; padding: 0.6rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+    .msg.error { background: #fee2e2; color: #b91c1c; }
+    .msg.success { background: #dcfce7; color: #15803d; }
+    .foot { margin-top: 1rem; font-size: 0.88rem; text-align: center; }
+    .foot a { color: #3b82f6; }
+  </style>
+</head>
+<body>
+  <header><h1><a href="index.html">📅 BookIt</a></h1></header>
+  <div class="card">
+    <h2>Create account</h2>
+    <form id="regForm">
+      <label for="username">Username</label>
+      <input id="username" name="username" required autocomplete="username">
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required autocomplete="email">
+
+      <label for="password">Password <span style="font-weight:400;color:#888">(min 6 chars)</span></label>
+      <input id="password" name="password" type="password" required autocomplete="new-password">
+
+      <button type="submit">Register</button>
+    </form>
+    <div class="msg" id="msg"></div>
+    <p class="foot">Already have an account? <a href="login.html">Log in</a></p>
+  </div>
+  <script>
+    document.getElementById('regForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const msg = document.getElementById('msg');
+      msg.style.display = 'none';
+
+      const body = {
+        username: document.getElementById('username').value,
+        email:    document.getElementById('email').value,
+        password: document.getElementById('password').value,
+      };
+
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.className = 'msg success';
+        msg.textContent = 'Account created! Redirecting…';
+        msg.style.display = 'block';
+        setTimeout(() => location.href = 'dashboard.html', 1000);
+      } else {
+        msg.className = 'msg error';
+        msg.textContent = data.error || 'Registration failed';
+        msg.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

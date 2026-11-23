@@ -1,0 +1,46 @@
+<%- include('partials/head', { pageTitle: 'Sign up' }) %>
+<%- include('partials/nav') %>
+
+<main class="container narrow">
+  <h1>Create an account</h1>
+
+  <%- include('partials/errors') %>
+
+  <form action="/signup" method="POST" class="auth-form" novalidate>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        value="<%= typeof values !== 'undefined' && values.username ? values.username : '' %>"
+        autocomplete="username"
+        required
+        maxlength="32"
+      />
+      <small>3–32 characters. Letters, numbers, and underscores only.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        autocomplete="new-password"
+        required
+        minlength="8"
+        maxlength="128"
+      />
+      <small>At least 8 characters.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+  </form>
+
+  <p class="auth-link">Already have an account? <a href="/login">Log in</a></p>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  notes:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATA_DIR=/data
+      # Set SESSION_SECRET here or in a .env file — never commit a real secret
+      - SESSION_SECRET=${SESSION_SECRET}
+      - LOCAL_HTTP_TEST=true
+    volumes:
+      - notes_data:/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  notes_data:

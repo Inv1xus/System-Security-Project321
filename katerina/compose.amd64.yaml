@@ -1,0 +1,28 @@
+x-amd64: &amd64
+  platform: linux/amd64
+
+services:
+  google-notes-plain:
+    <<: *amd64
+    image: soen321/google-ai-studio-private-notes-plain:1.0.0-amd64
+  google-notes-secure:
+    <<: *amd64
+    image: soen321/google-ai-studio-private-notes-security-focused:1.0.0-amd64
+  google-booking-plain:
+    <<: *amd64
+    image: soen321/google-ai-studio-appointment-booking-plain:1.0.0-amd64
+  google-booking-secure:
+    <<: *amd64
+    image: soen321/google-ai-studio-appointment-booking-security-focused:1.0.0-amd64
+  kiro-notes-plain:
+    <<: *amd64
+    image: soen321/kiro-private-notes-plain:1.0.0-amd64
+  kiro-notes-secure:
+    <<: *amd64
+    image: soen321/kiro-private-notes-security-focused:1.0.0-amd64
+  kiro-booking-plain:
+    <<: *amd64
+    image: soen321/kiro-appointment-booking-plain:1.0.0-amd64
+  kiro-booking-secure:
+    <<: *amd64
+    image: soen321/kiro-appointment-booking-security-focused:1.0.0-amd64

@@ -1,0 +1,4 @@
+Figure T06-A. Inspection of the authenticated /api/me endpoint in the
+Kiro plain-prompt application. The HTTP 200 response contains only the authenticated
+user's identifier and username, with no sensitive authentication credentials
+exposed.

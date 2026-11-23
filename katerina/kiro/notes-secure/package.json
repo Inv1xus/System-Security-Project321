@@ -1,0 +1,24 @@
+{
+  "name": "notes-secure",
+  "version": "1.0.0",
+  "description": "Private notes web app",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^7.0.2",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

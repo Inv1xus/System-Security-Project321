@@ -1,0 +1,3 @@
+Figure T02-A. SQL injection test against the Kiro plain-prompt application's
+note retrieval endpoint. The injected condition 1 OR 1=1 does not result in
+unauthorized data retrieval, and the server returns HTTP 404.

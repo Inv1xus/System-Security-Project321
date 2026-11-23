@@ -1,0 +1,180 @@
+{
+  "application": "kiro/booking-secure",
+  "harnessNode": "v24.9.0",
+  "node": "v20.19.5",
+  "installer": "11.6.0",
+  "lockMode": "manifest ranges",
+  "dependencies": {
+    "express": "4.22.3",
+    "better-sqlite3": "9.6.0",
+    "bcrypt": "5.1.1",
+    "jsonwebtoken": "9.0.3"
+  },
+  "platform": "darwin",
+  "architecture": "arm64",
+  "blocker": null,
+  "tests": [
+    {
+      "id": "T01.auth",
+      "expected": "Anonymous clients are denied access to the protected resource.",
+      "status": "Pass",
+      "actual": "HTTP 401",
+      "assessment": "Successful security control",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.credentials",
+      "expected": "An incorrect password is denied.",
+      "status": "Pass",
+      "actual": "HTTP 401",
+      "assessment": "Successful security control",
+      "evidence": "routes/authRoutes.js:79",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.admin",
+      "expected": "Ordinary user cannot create a slot through the admin operation.",
+      "status": "Pass",
+      "actual": "Non-admin HTTP 403. Created slot identifier present false",
+      "assessment": "Successful security control",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.crud",
+      "expected": "Admin creates a slot and owner creates and lists a booking.",
+      "status": "Pass",
+      "actual": "Owner listing contains the booking true",
+      "assessment": "Functional baseline passed",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.read",
+      "expected": "Second user cannot see the owner booking.",
+      "status": "Pass",
+      "actual": "Owner booking visible to second user false",
+      "assessment": "Successful security control",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "runtime"
+    },
+    {
+      "id": "T01.cancel",
+      "expected": "Second user cannot cancel the booking and the owner can.",
+      "status": "Pass",
+      "actual": "Non-owner HTTP 403, duplicate HTTP 409, owner HTTP 200",
+      "assessment": "Successful security control",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "runtime"
+    },
+    {
+      "id": "T02.literal",
+      "expected": "Input with ordinary punctuation remains literal across storage and retrieval.",
+      "status": "Skip",
+      "actual": "Booking contract uses structured date, time and numeric slot input.",
+      "assessment": "Untested",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "untested"
+    },
+    {
+      "id": "T02.binding",
+      "expected": "The login lookup uses a SQL placeholder for the supplied account identifier.",
+      "status": "Pass",
+      "actual": "Reviewed source contains a bound account lookup.",
+      "assessment": "Successful security control",
+      "evidence": "routes/authRoutes.js:79",
+      "mode": "source"
+    },
+    {
+      "id": "T02.injection",
+      "expected": "SQL inputs are evaluated for parameter binding.",
+      "status": "Skip",
+      "actual": "Runtime SQL injection was outside scope. See T02.binding for the source check.",
+      "assessment": "Untested",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "untested"
+    },
+    {
+      "id": "T03.storage",
+      "expected": "Inert markup is handled as text on the tested output path.",
+      "status": "Skip",
+      "actual": "Browser rendering of booking fields was not exercised.",
+      "assessment": "Untested",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "untested"
+    },
+    {
+      "id": "T03.browser",
+      "expected": "Browser DOM behavior is evaluated.",
+      "status": "Skip",
+      "actual": "Browser DOM behavior and script execution were not exercised.",
+      "assessment": "Untested",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "untested"
+    },
+    {
+      "id": "T04.cookie",
+      "expected": "Login cookie declares HttpOnly, SameSite and Secure under production or proxy-indicated HTTPS as applicable.",
+      "status": "Pass",
+      "actual": "HttpOnly true, SameSite true, Secure true.",
+      "assessment": "Successful security control",
+      "evidence": "routes/authRoutes.js:79",
+      "mode": "runtime"
+    },
+    {
+      "id": "T04.csrf",
+      "expected": "Documented anti-CSRF controls reject an invalid authenticated write.",
+      "status": "Skip",
+      "actual": "No adapter-specific CSRF control was exercised.",
+      "assessment": "Untested",
+      "evidence": "routes/bookingRoutes.js:10",
+      "mode": "untested"
+    },
+    {
+      "id": "T04.logout",
+      "expected": "Logout succeeds and returns a cookie-clearing header.",
+      "status": "Pass",
+      "actual": "HTTP 200. Clearing header present true",
+      "assessment": "Successful security control",
+      "evidence": "routes/authRoutes.js:101",
+      "mode": "runtime"
+    },
+    {
+      "id": "T04.revocation",
+      "expected": "Logout removes one session record from the isolated store.",
+      "status": "Skip",
+      "actual": "No SQLite session row to inspect. Credential replay, fixation and expiry were outside scope.",
+      "assessment": "Untested",
+      "evidence": "routes/authRoutes.js:101",
+      "mode": "untested"
+    },
+    {
+      "id": "T05.hash",
+      "expected": "Temporary passwords are salted bcrypt or scrypt values with distinct salts.",
+      "status": "Pass",
+      "actual": "Rows 2, expected format true, distinct salts true, plaintext false",
+      "assessment": "Successful security control",
+      "evidence": "routes/authRoutes.js:68",
+      "mode": "runtime"
+    },
+    {
+      "id": "T06.profile",
+      "expected": "The second account profile exposes no password or session fields.",
+      "status": "Pass",
+      "actual": "Sensitive field present false",
+      "assessment": "Successful security control",
+      "evidence": "routes/authRoutes.js:79",
+      "mode": "runtime"
+    },
+    {
+      "id": "T06.token",
+      "expected": "Login does not return a session token in the JSON body.",
+      "status": "Pass",
+      "actual": "Login JSON token field present false",
+      "assessment": "Successful security control",
+      "evidence": "routes/authRoutes.js:79",
+      "mode": "runtime"
+    }
+  ]
+}

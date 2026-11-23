@@ -1,0 +1,6 @@
+{
+  "name": "Folio",
+  "description": "A private, self-hosted notes workspace with per-user authentication and SQLite persistence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

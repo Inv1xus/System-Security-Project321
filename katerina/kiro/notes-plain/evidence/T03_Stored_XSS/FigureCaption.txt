@@ -1,0 +1,4 @@
+Figure T03-A. Stored XSS test performed on the Kiro plain-prompt application.
+The injected HTML payload was displayed as literal text within the note editor,
+with no observed JavaScript execution, indicating that the tested rendering
+path did not permit stored XSS.
