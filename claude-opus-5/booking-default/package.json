@@ -1,0 +1,14 @@
+{
+  "name": "claude-opus-5-booking-default",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Appointment booking app: Express + SQLite, users book slots, admin manages them",
+  "engines": { "node": ">=22.5.0" },
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "5.1.0"
+  }
+}

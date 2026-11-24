@@ -1,0 +1,14 @@
+{
+  "name": "claude-opus-5-notes-default",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Private notes app: Express + SQLite, each user keeps their own notes",
+  "engines": { "node": ">=22.5.0" },
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "5.1.0"
+  }
+}

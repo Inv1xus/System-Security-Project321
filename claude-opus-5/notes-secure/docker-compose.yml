@@ -1,0 +1,46 @@
+services:
+  notes:
+    build: .
+    image: claude-opus-5-notes-secure
+    container_name: private-notes
+    init: true
+    restart: unless-stopped
+    ports:
+      # Host port is overridable (HOST_PORT=3001 docker compose up -d);
+      # the app always listens on 3000 inside the container.
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DATA_DIR: /data
+      # Generate with:
+      #   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      # If omitted, a key is generated once and kept in the notes-data volume.
+      SESSION_SECRET: "${SESSION_SECRET:-}"
+      # Set to "true" only when the app is served over HTTPS.
+      COOKIE_SECURE: "${COOKIE_SECURE:-false}"
+      TRUST_PROXY: "${TRUST_PROXY:-0}"
+      SESSION_TTL_MINUTES: "120"
+    volumes:
+      - notes-data:/data
+    # Hardening: no new privileges, read-only root filesystem, dropped caps.
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  notes-data:

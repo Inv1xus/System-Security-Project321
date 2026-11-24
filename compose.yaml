@@ -1,0 +1,100 @@
+name: soen321-local
+
+x-local-app: &local-app
+  pull_policy: never
+  init: true
+  tmpfs:
+    - /app/data:rw,nosuid,nodev,noexec,uid=1000,gid=1000,mode=0700
+
+services:
+  google-notes-plain:
+    <<: *local-app
+    image: soen321/google-notes-plain:local
+    build:
+      context: .
+      dockerfile: packaging/google.Dockerfile
+      args:
+        APP_DIR: google-ai-studio/notes-default
+    command: ["node", "--import", "tsx", "server.ts"]
+    ports: ["127.0.0.1:3101:3000"]
+
+  google-notes-secure:
+    <<: *local-app
+    image: soen321/google-notes-secure:local
+    build:
+      context: .
+      dockerfile: packaging/google.Dockerfile
+      args:
+        APP_DIR: google-ai-studio/notes-secure
+    ports: ["127.0.0.1:3102:3000"]
+
+  google-booking-plain:
+    <<: *local-app
+    image: soen321/google-booking-plain:local
+    build:
+      context: .
+      dockerfile: packaging/google.Dockerfile
+      args:
+        APP_DIR: google-ai-studio/booking-default
+    ports: ["127.0.0.1:3103:3000"]
+
+  google-booking-secure:
+    <<: *local-app
+    image: soen321/google-booking-secure:local
+    build:
+      context: .
+      dockerfile: packaging/google.Dockerfile
+      args:
+        APP_DIR: google-ai-studio/booking-secure
+    environment:
+      ADMIN_EMAIL: ${SOEN321_ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${SOEN321_ADMIN_PASSWORD:-}
+    ports: ["127.0.0.1:3104:3000"]
+
+  kiro-notes-plain:
+    <<: *local-app
+    image: soen321/kiro-notes-plain:local
+    build:
+      context: .
+      dockerfile: packaging/kiro.Dockerfile
+      args:
+        APP_DIR: kiro/notes-default
+    ports: ["127.0.0.1:3105:3000"]
+
+  kiro-notes-secure:
+    <<: *local-app
+    image: soen321/kiro-notes-secure:local
+    build:
+      context: .
+      dockerfile: packaging/kiro.Dockerfile
+      args:
+        APP_DIR: kiro/notes-secure
+        NODE_VERSION: "24.9.0"
+    command: ["node", "src/app.js"]
+    environment:
+      LOCAL_HTTP_TEST: "true"
+    ports: ["127.0.0.1:3106:3000"]
+
+  kiro-booking-plain:
+    <<: *local-app
+    image: soen321/kiro-booking-plain:local
+    build:
+      context: .
+      dockerfile: packaging/kiro.Dockerfile
+      args:
+        APP_DIR: kiro/booking-default
+    ports: ["127.0.0.1:3107:3000"]
+
+  kiro-booking-secure:
+    <<: *local-app
+    image: soen321/kiro-booking-secure:local
+    build:
+      context: .
+      dockerfile: packaging/kiro.Dockerfile
+      args:
+        APP_DIR: kiro/booking-secure
+    environment:
+      LOCAL_HTTP_TEST: "true"
+      SOEN321_SEED_ADMIN: "true"
+      ADMIN_PASSWORD: ${SOEN321_ADMIN_PASSWORD:-}
+    ports: ["127.0.0.1:3108:3000"]
