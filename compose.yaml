@@ -7,9 +7,9 @@ x-local-app: &local-app
     - /app/data:rw,nosuid,nodev,noexec,uid=1000,gid=1000,mode=0700
 
 services:
-  google-notes-plain:
+  google-notes-default:
     <<: *local-app
-    image: soen321/google-notes-plain:local
+    image: soen321/google-notes-default:local
     build:
       context: .
       dockerfile: packaging/google.Dockerfile
@@ -28,9 +28,9 @@ services:
         APP_DIR: google-ai-studio/notes-secure
     ports: ["127.0.0.1:3102:3000"]
 
-  google-booking-plain:
+  google-booking-default:
     <<: *local-app
-    image: soen321/google-booking-plain:local
+    image: soen321/google-booking-default:local
     build:
       context: .
       dockerfile: packaging/google.Dockerfile
@@ -51,9 +51,9 @@ services:
       ADMIN_PASSWORD: ${SOEN321_ADMIN_PASSWORD:-}
     ports: ["127.0.0.1:3104:3000"]
 
-  kiro-notes-plain:
+  kiro-notes-default:
     <<: *local-app
-    image: soen321/kiro-notes-plain:local
+    image: soen321/kiro-notes-default:local
     build:
       context: .
       dockerfile: packaging/kiro.Dockerfile
@@ -75,9 +75,9 @@ services:
       LOCAL_HTTP_TEST: "true"
     ports: ["127.0.0.1:3106:3000"]
 
-  kiro-booking-plain:
+  kiro-booking-default:
     <<: *local-app
-    image: soen321/kiro-booking-plain:local
+    image: soen321/kiro-booking-default:local
     build:
       context: .
       dockerfile: packaging/kiro.Dockerfile

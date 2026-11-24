@@ -1,17 +1,17 @@
 services:
-  google-notes-plain:
+  google-notes-default:
     image: soen321/google-ai-studio-private-notes-plain:1.0.0
   google-notes-secure:
     image: soen321/google-ai-studio-private-notes-security-focused:1.0.0
-  google-booking-plain:
+  google-booking-default:
     image: soen321/google-ai-studio-appointment-booking-plain:1.0.0
   google-booking-secure:
     image: soen321/google-ai-studio-appointment-booking-security-focused:1.0.0
-  kiro-notes-plain:
+  kiro-notes-default:
     image: soen321/kiro-private-notes-plain:1.0.0
   kiro-notes-secure:
     image: soen321/kiro-private-notes-security-focused:1.0.0
-  kiro-booking-plain:
+  kiro-booking-default:
     image: soen321/kiro-appointment-booking-plain:1.0.0
   kiro-booking-secure:
     image: soen321/kiro-appointment-booking-security-focused:1.0.0

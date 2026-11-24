@@ -12,19 +12,20 @@ the [consolidated results](../results/comparison.md), or the
 
 ## Applications
 
-Use the service name to select a build in Docker Compose. The service names and
-image tags keep the `-plain` label used by the recorded evaluation runs and the
-release manifests; the folders they build from are named `-default`.
+Use the service name to select a build in Docker Compose. Service names match
+their build folders. The published `1.0.0` image tags and archive filenames in
+the [release manifests](../packaging/release-manifest.md) keep the `-plain`
+wording they were built with.
 
 | Application | Builder | Prompt | SQLite driver | Compose service | Local URL |
 |---|---|---|---|---|---|
-| [Private Notes](../google-ai-studio/notes-default/) | Google AI Studio | Plain | `better-sqlite3` | `google-notes-plain` | [127.0.0.1:3101](http://127.0.0.1:3101) |
+| [Private Notes](../google-ai-studio/notes-default/) | Google AI Studio | Plain | `better-sqlite3` | `google-notes-default` | [127.0.0.1:3101](http://127.0.0.1:3101) |
 | [Private Notes](../google-ai-studio/notes-secure/) | Google AI Studio | Security-focused | `better-sqlite3` | `google-notes-secure` | [127.0.0.1:3102](http://127.0.0.1:3102) |
-| [Private Notes](../kiro/notes-default/) | Kiro | Plain | `better-sqlite3` | `kiro-notes-plain` | [127.0.0.1:3105](http://127.0.0.1:3105) |
+| [Private Notes](../kiro/notes-default/) | Kiro | Plain | `better-sqlite3` | `kiro-notes-default` | [127.0.0.1:3105](http://127.0.0.1:3105) |
 | [Private Notes](../kiro/notes-secure/) | Kiro | Security-focused | `node:sqlite` | `kiro-notes-secure` | [127.0.0.1:3106](http://127.0.0.1:3106) |
-| [Appointment Booking](../google-ai-studio/booking-default/) | Google AI Studio | Plain | `better-sqlite3` | `google-booking-plain` | [127.0.0.1:3103](http://127.0.0.1:3103) |
+| [Appointment Booking](../google-ai-studio/booking-default/) | Google AI Studio | Plain | `better-sqlite3` | `google-booking-default` | [127.0.0.1:3103](http://127.0.0.1:3103) |
 | [Appointment Booking](../google-ai-studio/booking-secure/) | Google AI Studio | Security-focused | `better-sqlite3` | `google-booking-secure` | [127.0.0.1:3104](http://127.0.0.1:3104) |
-| [Appointment Booking](../kiro/booking-default/) | Kiro | Plain | `better-sqlite3` | `kiro-booking-plain` | [127.0.0.1:3107](http://127.0.0.1:3107) |
+| [Appointment Booking](../kiro/booking-default/) | Kiro | Plain | `better-sqlite3` | `kiro-booking-default` | [127.0.0.1:3107](http://127.0.0.1:3107) |
 | [Appointment Booking](../kiro/booking-secure/) | Kiro | Security-focused | `better-sqlite3` | `kiro-booking-secure` | [127.0.0.1:3108](http://127.0.0.1:3108) |
 
 See [implementation size, test coverage, and security controls](security-evaluation.md#implementation-comparison)
@@ -50,8 +51,8 @@ docker compose ps
 To build and start one application, supply its service name.
 
 ```sh
-docker compose build google-notes-plain
-docker compose up -d --no-build --pull never google-notes-plain
+docker compose build google-notes-default
+docker compose up -d --no-build --pull never google-notes-default
 ```
 
 Open the application's loopback URL from the table. To stop the project:

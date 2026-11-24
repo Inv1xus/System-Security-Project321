@@ -20,13 +20,13 @@ delete environment.SOEN321_ADMIN_PASSWORD;
 delete environment.SOEN321_ADMIN_EMAIL;
 
 const probes = {
-  'google-notes-plain': { path: '/', database: 'notes.db', api: '/api/health', status: 200 },
+  'google-notes-default': { path: '/', database: 'notes.db', api: '/api/health', status: 200 },
   'google-notes-secure': { path: '/', database: 'notes.db', api: '/api/health', status: 200 },
-  'google-booking-plain': { path: '/', database: 'appointments.db', api: '/api/health', status: 200 },
+  'google-booking-default': { path: '/', database: 'appointments.db', api: '/api/health', status: 200 },
   'google-booking-secure': { path: '/', database: 'appointments.db', api: '/api/health', status: 200 },
-  'kiro-notes-plain': { path: '/', database: 'notes.db', api: '/api/notes', status: 401 },
+  'kiro-notes-default': { path: '/', database: 'notes.db', api: '/api/notes', status: 401 },
   'kiro-notes-secure': { path: '/login', database: 'notes.db', api: '/notes', status: 302 },
-  'kiro-booking-plain': { path: '/', database: 'booking.db', api: '/api/bookings', status: 401 },
+  'kiro-booking-default': { path: '/', database: 'booking.db', api: '/api/bookings', status: 401 },
   'kiro-booking-secure': { path: '/', database: 'booking.db', api: '/api/bookings', status: 401 },
 };
 

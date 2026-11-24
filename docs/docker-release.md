@@ -35,7 +35,7 @@ From the repository root, stop any containers that occupy the [ports in the appl
 
 ```sh
 docker compose -p "soen321-prebuilt-$architecture" -f compose.yaml -f "$override" \
-  up -d --no-build --pull never google-notes-plain
+  up -d --no-build --pull never google-notes-default
 ```
 
 To start all eight, load all eight archives and omit the service name. To remove the prebuilt project's containers and its temporary state, run the following command from the repository root.
