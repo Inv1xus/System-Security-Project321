@@ -113,7 +113,7 @@ Each note is associated with a user through `user_id`.
 The application was built locally using:
 
 ```bash
-docker build -t kiro-notes-plain .
+docker build -t kiro-notes-default .
 ```
 
 #### 4.2 Docker Container
@@ -122,10 +122,10 @@ The container was started using:
 
 ```bash
 docker run -d \
-  --name kiro-notes-plain \
+  --name kiro-notes-default \
   -p 3000:3000 \
   -v kiro-notes-data:/app/data \
-  kiro-notes-plain
+  kiro-notes-default
 ```
 
 The application was accessible at:
@@ -586,15 +586,15 @@ These are recommendations derived from the security assessment and were not appl
 To reproduce the application deployment:
 
 ```bash
-docker build -t kiro-notes-plain .
+docker build -t kiro-notes-default .
 ```
 
 ```bash
 docker run -d \
-  --name kiro-notes-plain \
+  --name kiro-notes-default \
   -p 3000:3000 \
   -v kiro-notes-data:/app/data \
-  kiro-notes-plain
+  kiro-notes-default
 ```
 
 Open:
@@ -606,13 +606,13 @@ http://localhost:3000
 To stop the application:
 
 ```bash
-docker stop kiro-notes-plain
+docker stop kiro-notes-default
 ```
 
 To restart the existing container:
 
 ```bash
-docker start kiro-notes-plain
+docker start kiro-notes-default
 ```
 
 **Note:** Reusing the existing named Docker volume preserves previously created test accounts and notes. A fresh experiment should use a separate volume to avoid contamination from earlier test data.
